@@ -1,9 +1,29 @@
+import { GithubAuthProvider, signInWithPopup } from 'firebase/auth'
 import { Code2, ExternalLink, File, GitBranch, GitBranchIcon, GitBranchPlus } from 'lucide-react'
 import React from 'react'
+import { auth, provider } from '../api/firebaseSetup.js'
+import api from '../api/axios.js'
 
 function AuthComp() {
-    const handleGithubLogin = () => {
-        console.log('Login with GitHub clicked')
+    const handleGithubLogin = async () => {
+        try {
+            const response= await signInWithPopup(auth,provider);
+            const credientials=GithubAuthProvider.credentialFromResult(response);
+            const token=credientials.accessToken;
+            const data={
+                gitToken:token,
+                user:{
+                    id:response.user.uid,
+                    name:response.user.displayName,
+                    email:response.user.email,
+                    img:response.user.photoURL
+                }
+            }
+            console.log(data)
+            const backenResponse= await api.post('/Authorization',data)
+        } catch (error) {
+            console.log(error)
+        }
        
     }
 
