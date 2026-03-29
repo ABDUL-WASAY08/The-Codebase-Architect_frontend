@@ -3,6 +3,7 @@ import { Code2, ExternalLink, File, GitBranch, GitBranchIcon, GitBranchPlus } fr
 import React from 'react'
 import { auth, provider } from '../api/firebaseSetup.js'
 import api from '../api/axios.js'
+import toast from 'react-hot-toast'
 
 function AuthComp() {
     const handleGithubLogin = async () => {
@@ -10,7 +11,7 @@ function AuthComp() {
             const response= await signInWithPopup(auth,provider);
             const credientials=GithubAuthProvider.credentialFromResult(response);
             const token=credientials.accessToken;
-            const data={
+            const payload={
                 gitToken:token,
                 user:{
                     id:response.user.uid,
@@ -19,14 +20,17 @@ function AuthComp() {
                     img:response.user.photoURL
                 }
             }
-            console.log(data)
-            const backenResponse= await api.post('/Authorization',data)
+            const backenResponse= await api.post('/Authorization',{data:payload});
+            if(backenResponse.data.success){
+                toast.success('login successfull')
+            }
+            else{
+                console.log(backenResponse.data.message)
+            }
         } catch (error) {
             console.log(error)
         }
-       
     }
-
     return (
         <div className='min-h-screen bg-gradient-to-br from-gray-50 to-gray-100'>
             <div className='grid lg:grid-cols-2 min-h-screen'>
