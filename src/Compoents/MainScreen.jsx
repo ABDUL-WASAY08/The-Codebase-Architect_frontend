@@ -20,14 +20,23 @@ import {
   Database,
   Zap
 } from 'lucide-react';
-
+import useUserStore from '../Store/userStore';
+import {useNavigate} from "react-router-dom"
+import {toast} from "react-hot-toast"
 const MainScreen = () => {
+  const navigate=useNavigate();
   const [activeSidebar, setActiveSidebar] = useState('Dashboard');
   const [repoUrl, setRepoUrl] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [chatMessage, setChatMessage] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
+  const {logout}=useUserStore();
+  //functions
+  const hanndleLogout =()=>{
+    logout();
+    navigate('/')
+    toast.success('Logout successfully')
+  }
   // Sample repositories data
   const repositories = [
     {
@@ -431,7 +440,7 @@ const MainScreen = () => {
                     Settings
                   </button>
                   <hr className="my-1" />
-                  <button className="w-full px-4 py-2 text-left text-red-600 hover:bg-gray-50 flex items-center gap-2">
+                  <button className="w-full px-4 py-2 text-left text-red-600 hover:bg-gray-50 flex items-center gap-2" onClick={hanndleLogout}>
                     <LogOut size={16} />
                     Logout
                   </button>
