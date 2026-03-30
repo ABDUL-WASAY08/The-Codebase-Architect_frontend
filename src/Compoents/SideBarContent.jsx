@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Home, FolderGit2, BarChart3, Settings, Menu, X } from 'lucide-react';
 
-const SideBar = ({ activeComp, setActiveComp }) => {
+const SideBarContent = ({ activeComp, setActiveComp }) => {
     const [isOpen, setIsOpen] = useState(false); 
     const sidebarRef = useRef(null);
 
@@ -80,4 +80,4 @@ const SideBar = ({ activeComp, setActiveComp }) => {
     );
 };
 
-export default SideBar;
+export default SideBarContent;
