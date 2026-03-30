@@ -4,31 +4,37 @@ import React from 'react'
 import { auth, provider } from '../api/firebaseSetup.js'
 import api from '../api/axios.js'
 import toast from 'react-hot-toast'
+import { useNavigate } from 'react-router-dom'
+import useUserStore from '../Store/userStore.js'
 
 function AuthComp() {
+    const { login } = useUserStore();
+    const navigate = useNavigate();
     const handleGithubLogin = async () => {
         try {
-            const response= await signInWithPopup(auth,provider);
-            const credientials=GithubAuthProvider.credentialFromResult(response);
-            const token=credientials.accessToken;
-            const payload={
-                gitToken:token,
-                user:{
-                    id:response.user.uid,
-                    name:response.user.displayName,
-                    email:response.user.email,
-                    img:response.user.photoURL
+            const response = await signInWithPopup(auth, provider);
+            const credentials = GithubAuthProvider.credentialFromResult(response);
+            const token = credentials.accessToken;
+
+            const payload = {
+                gitToken: token,
+                user: {
+                    id: response.user.uid,
+                    name: response.user.displayName,
+                    email: response.user.email,
+                    img: response.user.photoURL
                 }
             }
-            const backenResponse= await api.post('/Authorization',{data:payload});
-            if(backenResponse.data.success){
-                toast.success('login successfull')
-            }
-            else{
-                console.log(backenResponse.data.message)
+            const res = await login(payload);
+            if (res && res.success) {
+                toast.success('Login successful!');
+                navigate('/DashBoard');
+            } else {
+                toast.error('Backend authorization failed');
             }
         } catch (error) {
-            console.log(error)
+            console.error(error);
+            toast.error('GitHub login failed');
         }
     }
     return (
@@ -43,9 +49,9 @@ function AuthComp() {
                                 CODE BASED ARCHITECTURE
                             </h1>
                         </div>
-                        
+
                         <div className='space-y-6 mt-8 w-full'>
-                           
+
                             <div className='grid gap-4'>
                                 <div className='flex items-start gap-3 p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow'>
                                     <div className='text-red-600 text-xl'><GitBranchPlus /></div>
@@ -54,7 +60,7 @@ function AuthComp() {
                                         <p className='text-gray-600'>Analyze the repo code in professional way</p>
                                     </div>
                                 </div>
-                                
+
                                 <div className='flex items-start gap-3 p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow'>
                                     <div className='text-blue-600 text-xl'><GitBranchIcon /></div>
                                     <div>
@@ -62,7 +68,7 @@ function AuthComp() {
                                         <p className='text-gray-600'>Analyze the git repos using the git url adress</p>
                                     </div>
                                 </div>
-                                
+
                                 <div className='flex items-start gap-3 p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow'>
                                     <div className='text-red-600 text-xl'><File /></div>
                                     <div>
@@ -70,7 +76,7 @@ function AuthComp() {
                                         <p className='text-gray-600'>Files of repo can be index via features</p>
                                     </div>
                                 </div>
-                                
+
                                 <div className='flex items-start gap-3 p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow'>
                                     <div className='text-blue-600 text-xl'><ExternalLink /></div>
                                     <div>
@@ -89,7 +95,7 @@ function AuthComp() {
                         <div className='flex justify-center mb-8'>
                             <div className='relative'>
                                 <div className='absolute inset-0 bg-blue-400 rounded-full filter blur-3xl opacity-20 animate-pulse'></div>
-                                <img 
+                                <img
                                     src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=400&h=400&q=80"
                                     alt="Coding workspace"
                                     className='relative rounded-2xl shadow-2xl w-64 h-64 object-cover'
