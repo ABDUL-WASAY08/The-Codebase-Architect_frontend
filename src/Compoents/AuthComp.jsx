@@ -143,6 +143,7 @@ function AuthComp() {
                     </div>
                 </div>
             </div>
+            
         </div>
     )
 }
