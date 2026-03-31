@@ -198,14 +198,6 @@ function AuthComp() {
                         </div>
                     </div>
                     
-                    <div className='mt-12 text-center'>
-                        <button 
-                            onClick={handleScroll}
-                            className='bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-all duration-200 transform hover:scale-105 shadow-md'
-                        >
-                            Get Started Now
-                        </button>
-                    </div>
                 </div>
             </div>
         </div>
