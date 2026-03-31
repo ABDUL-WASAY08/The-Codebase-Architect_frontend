@@ -144,6 +144,70 @@ function AuthComp() {
                 </div>
             </div>
             
+            {/* Detailed Features Section */}
+            <div className='bg-white py-16 px-4 md:px-8'>
+                <div className='max-w-7xl mx-auto'>
+                    <div className='text-center mb-12'>
+                        <h2 className='text-3xl md:text-4xl font-bold text-gray-800 mb-4'>
+                            Powerful Features for Code Analysis
+                        </h2>
+                        <p className='text-gray-600 text-lg max-w-2xl mx-auto'>
+                            Discover how our platform helps you analyze and understand your code repositories better
+                        </p>
+                    </div>
+                    
+                    <div className='grid md:grid-cols-2 lg:grid-cols-4 gap-8'>
+                        <div className='bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow'>
+                            <div className='text-red-600 mb-4'>
+                                <GitBranchPlus size={40} />
+                            </div>
+                            <h3 className='text-xl font-semibold text-gray-800 mb-2'>Repository Analysis</h3>
+                            <p className='text-gray-600'>
+                                Deep dive into your Git repositories with professional code analysis tools. Get insights about code quality, structure, and potential improvements.
+                            </p>
+                        </div>
+                        
+                        <div className='bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow'>
+                            <div className='text-blue-600 mb-4'>
+                                <GitBranchIcon size={40} />
+                            </div>
+                            <h3 className='text-xl font-semibold text-gray-800 mb-2'>URL-Based Analysis</h3>
+                            <p className='text-gray-600'>
+                                Simply paste any Git repository URL and get instant analysis. No need to clone repositories locally - we handle everything for you.
+                            </p>
+                        </div>
+                        
+                        <div className='bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow'>
+                            <div className='text-red-600 mb-4'>
+                                <File size={40} />
+                            </div>
+                            <h3 className='text-xl font-semibold text-gray-800 mb-2'>File Indexing</h3>
+                            <p className='text-gray-600'>
+                                Advanced file indexing system that organizes and categorizes your repository files for quick access and comprehensive analysis.
+                            </p>
+                        </div>
+                        
+                        <div className='bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow'>
+                            <div className='text-blue-600 mb-4'>
+                                <ExternalLink size={40} />
+                            </div>
+                            <h3 className='text-xl font-semibold text-gray-800 mb-2'>Chrome Extension</h3>
+                            <p className='text-gray-600'>
+                                Seamless integration with our Chrome extension. Analyze GitHub repositories directly from your browser with one click.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div className='mt-12 text-center'>
+                        <button 
+                            onClick={handleScroll}
+                            className='bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-all duration-200 transform hover:scale-105 shadow-md'
+                        >
+                            Get Started Now
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }
