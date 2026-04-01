@@ -33,8 +33,6 @@ const SideBarContent = ({ activeComp, setActiveComp }) => {
             >
                 {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
-
-            {/* Sidebar Body */}
             <div 
                 ref={sidebarRef}
                 className={`

@@ -21,8 +21,8 @@ function App() {
     )
   }
   return (
-    <>
-      <div >
+    <div>
+      <div  >
         <Toaster position='top-center' reverseOrder={false} />
       </div>
       <BrowserRouter>
@@ -32,7 +32,7 @@ function App() {
           <Route path='*' element={<ProtectedRoute><NotFound /></ProtectedRoute>} />
         </Routes>
       </BrowserRouter>
-    </>
+    </div>
   )
 }
 export default App
