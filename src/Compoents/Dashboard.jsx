@@ -5,40 +5,55 @@ import {
 } from 'lucide-react';
 import { useRepoStore } from '../Store/RepoStore';
 import toast from 'react-hot-toast';
-
+import api from '../api/axios';
+import {useNavigate} from "react-router-dom"
 const DashboardContent = () => {
+  const navigate=useNavigate()
   const { repos, isLoading, getRepos } = useRepoStore();
   const [repoUrl, setRepoUrl] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-
-  // 2. Component mount hote hi repositories fetch karna
   useEffect(() => {
     getRepos();
   }, [getRepos]);
 
-  const handleAnalyze = (repo) => {
+  const handleAnalyze = async (repo) => {
     try {
+      setIsAnalyzing(true);
       const urlToAnalyze = repo?.url || repoUrl;
       if (!urlToAnalyze) return;
+
       const regex = /github\.com\/([^/]+)\/([^/]+)/;
       const match = urlToAnalyze.match(regex);
-      if (match) {
-        const owner = match[1];
-        const repoName = match[2].replace('.git', "");
-      } else {
-        toast.error('invalid url')
-        return
-      }
       
+      if (!match) {
+        toast.error('Invalid GitHub URL');
+        setIsAnalyzing(false);
+        return;
+      }
+      const owner = match[1];
+      const repoName = match[2].replace('.git', "");
+      const response = await api.post('/getTree', {
+        owner,
+        repo: repoName,
+        branch: repo?.defaultBranch || "main"
+      });
+
+      if (response.data.success) {
+        toast.success('File tree fetched!');
+        console.log("Files:", response.data.files);
+        navigate('/Analyzer', { state: { files: response.data.files, fullName: `${owner}/${repoName}` } });
+      }
+
     } catch (error) {
-
+      console.error(error);
+      toast.error(error.response?.data?.message || 'Analysis failed');
+    } finally {
+      setIsAnalyzing(false);
     }
-
   };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 scroll-y-auto">
-      {/* Hero Section */}
       <div className="bg-white dark:bg-black rounded-xl shadow-sm p-6 sm:p-8 relative overflow-hidden transition-colors mb-6 border border-gray-100 dark:border-gray-800">
         <div className="relative z-10">
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4">
@@ -53,8 +68,6 @@ const DashboardContent = () => {
           <Code2 size={200} className="sm:w-[250px] sm:h-[250px] lg:w-[300px] lg:h-[300px]" />
         </div>
       </div>
-
-      {/* Connected Repositories Section */}
       <div className="bg-white dark:bg-black p-4 sm:p-6 transition-colors mb-6 border border-gray-100 dark:border-gray-800 rounded-xl">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
           <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white">
@@ -116,8 +129,6 @@ const DashboardContent = () => {
           )}
         </div>
       </div>
-
-      {/* Manual Analysis Section */}
       <div className="bg-white dark:bg-black p-4 sm:p-6 transition-colors border border-gray-100 dark:border-gray-800 rounded-xl">
         <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white mb-4">
           Direct Analysis

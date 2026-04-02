@@ -7,6 +7,7 @@ import useUserStore from './Store/userStore'
 import MainScreen from './Compoents/MainScreen'
 import ProtectedRoute from './ProtectedRoute/ProtectedRoute'
 import NotFound from './Compoents/NotFound'
+import Analyzer from './Compoents/Analyzer'
 
 function App() {
   const { getMe, isLoading,isAuthenticated } = useUserStore();
@@ -29,6 +30,7 @@ function App() {
         <Routes>
           <Route path='/' element={isAuthenticated?<Navigate to='/DashBoard' />:<AuthComp />} />
           <Route path='/DashBoard' element={<ProtectedRoute><MainScreen /></ProtectedRoute>} />
+          <Route path='/Analyzer' element={<ProtectedRoute><Analyzer /></ProtectedRoute>} />
           <Route path='*' element={<ProtectedRoute><NotFound /></ProtectedRoute>} />
         </Routes>
       </BrowserRouter>

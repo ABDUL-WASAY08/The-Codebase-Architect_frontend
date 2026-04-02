@@ -21,7 +21,6 @@ const useUserStore = create((set) => ({
       return { success: false };
     } catch (error) {
       set({ isLoading: false, isAuthenticated: false });
-      console.error("Login error:", error);
       return { success: false };
     }
   },
@@ -35,14 +34,12 @@ const useUserStore = create((set) => ({
         isAuthenticated: !!userData,
         isLoading: false,
       });
-      console.log(response.data.user);
     } catch (error) {
       set({
         user: null,
         isAuthenticated: false,
         isLoading: false,
       });
-      console.error("Failed to fetch user:", error);
     }
   },
   logout: async () => {
