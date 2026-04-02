@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { 
+import {
   Code2, GitBranchIcon, Trash2, Eye,
   BarChart3, GitBranch, ExternalLink
 } from 'lucide-react';
 import { useRepoStore } from '../Store/RepoStore';
+import toast from 'react-hot-toast';
 
 const DashboardContent = () => {
   const { repos, isLoading, getRepos } = useRepoStore();
@@ -16,15 +17,23 @@ const DashboardContent = () => {
   }, [getRepos]);
 
   const handleAnalyze = (repo) => {
-    // Abhi ke liye sirf console kar rahe hain, baad mein analysis logic yahan aayega
-    const targetUrl = repo?.url || repoUrl;
-    if (!targetUrl) return;
-    
-    setIsAnalyzing(true);
-    console.log("Analyzing Repository:", targetUrl);
-    
-    // Simulate API call
-    setTimeout(() => setIsAnalyzing(false), 3000);
+    try {
+      const urlToAnalyze = repo?.url || repoUrl;
+      if (!urlToAnalyze) return;
+      const regex = /github\.com\/([^/]+)\/([^/]+)/;
+      const match = urlToAnalyze.match(regex);
+      if (match) {
+        const owner = match[1];
+        const repoName = match[2].replace('.git', "");
+      } else {
+        toast.error('invalid url')
+        return
+      }
+      
+    } catch (error) {
+
+    }
+
   };
 
   return (
@@ -53,7 +62,7 @@ const DashboardContent = () => {
           </h2>
           {isLoading && <span className="text-sm text-blue-500 animate-pulse">Syncing with GitHub...</span>}
         </div>
-        
+
         <div className="space-y-4 max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
           {repos.length > 0 ? (
             repos.map((repo) => (
@@ -61,7 +70,7 @@ const DashboardContent = () => {
                 <div className="flex flex-col sm:flex-row justify-between items-start gap-3">
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
-                       <a
+                      <a
                         href={repo.url}
                         target="_blank"
                         rel="noopener noreferrer"
@@ -80,9 +89,9 @@ const DashboardContent = () => {
                       {repo.description || "No description provided."}
                     </p>
                   </div>
-                  
+
                   <div className="flex gap-2 w-full sm:w-auto justify-end">
-                    <button 
+                    <button
                       onClick={() => handleAnalyze(repo)}
                       className="flex items-center gap-2 text-sm bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
                     >
@@ -91,7 +100,7 @@ const DashboardContent = () => {
                     </button>
                   </div>
                 </div>
-                
+
                 <div className="flex flex-wrap gap-4 mt-3 text-xs text-gray-500 dark:text-gray-400 border-t border-gray-100 dark:border-gray-800 pt-3">
                   <span className="flex items-center gap-1">
                     <div className="w-2 h-2 rounded-full bg-blue-500"></div>
