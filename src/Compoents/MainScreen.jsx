@@ -6,6 +6,7 @@ import useUserStore from '../Store/userStore';
 import RepositoriesContent from './RepositoriesContent';
 import AnalyzeContent from './AnalyzeContent';
 import SideBarContent from './SideBarContent';
+import ChromeExtension from './ChromeExtension';
 
 function MainScreen() {
   const [activeComp, setActiveComp] = useState('Dashboard');
@@ -30,6 +31,7 @@ function MainScreen() {
           {activeComp === 'Dashboard' && <DashboardContent />}
            {activeComp === 'Repositories' && <RepositoriesContent />}
           {activeComp === 'Analyze' && <AnalyzeContent />}
+          {activeComp === 'ChromeExtension' && <ChromeExtension />}
           
           {activeComp === 'Settings' && (
             <SettingsContent 

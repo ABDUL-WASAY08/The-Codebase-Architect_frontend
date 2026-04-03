@@ -10,7 +10,7 @@ const SideBarContent = ({ activeComp, setActiveComp }) => {
         { name: 'Repositories', icon: FolderGit2 },
         { name: 'Analyze', icon: BarChart3 },
         { name: 'Settings', icon: Settings },
-        { name: 'GetChrome Extension', icon: Gift }
+        { name: 'ChromeExtension', icon: Gift }
     ];
 
     useEffect(() => {
