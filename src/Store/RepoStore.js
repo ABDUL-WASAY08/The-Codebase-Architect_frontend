@@ -1,8 +1,9 @@
 import { create } from "zustand";
 import api from "../api/axios";
 import toast from "react-hot-toast";
-import {persist, createJSONStorage} from "zustand/middleware"
-export const useRepoStore = create(persist((set,get) => ({
+import { persist, createJSONStorage } from "zustand/middleware"
+
+export const useRepoStore = create(persist((set, get) => ({
   isLoading: false,
   repos: [],
   error: null,
@@ -10,7 +11,8 @@ export const useRepoStore = create(persist((set,get) => ({
   owner: "",
   repoName: "",
   selectedFileContent: null,
-  GroqContent:null,
+  GroqContent: null,
+  recentAnalyses: [],
   getRepos: async () => {
     set({ isLoading: true, error: null });
     try {
@@ -70,15 +72,17 @@ export const useRepoStore = create(persist((set,get) => ({
         return { success: true };
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || "Analysis failed");
+      toast.error("this file cant not be analysed");
+      set({GroqContent:null})
       return { success: false };
     } finally {
       set({ isLoading: false });
     }
   },
+
   getFileContent: async (path) => {
-    const { owner, repoName } = get();
-    
+    const { owner, repoName, recentAnalyses } = get();
+
     if (!owner || !repoName || !path) {
       toast.error("Missing repository information");
       return null;
@@ -93,29 +97,42 @@ export const useRepoStore = create(persist((set,get) => ({
       });
 
       if (response.data.success) {
-        set({ selectedFileContent: response.data.content,GroqContent:response.data.analysis });
+        const newEntry = {
+          fileName: path.split('/').pop(),
+          path: path,
+          analysis: response.data.analysis,
+          repoName: repoName
+        };
+        const filtered = recentAnalyses.filter(item => item.path !== path);
+        const updatedRecent = [newEntry, ...filtered].slice(0, 3);
+
+        set({
+          selectedFileContent: response.data.content,
+          GroqContent: response.data.analysis,
+          recentAnalyses: updatedRecent
+        });
+
         return response.data.content;
       }
     } catch (error) {
-      console.error("File Content Error:", error);
-      toast.error(error.response?.data?.message || "Failed to load file content");
+      toast.error("No data found for analysis");
+      set({GroqContent:null})
       return null;
     } finally {
       set({ isLoading: false });
     }
   },
 }),
-{
-  name: 'repo-storage',
-  storage: createJSONStorage(()=>localStorage),
-  partialize:(state)=>({
-    files:state.files,
-    owner:state.owner,
-    repoName:state.repoName,
-    selectedFileContent:state.selectedFileContent,
-    GroqContent:state.GroqContent,
-  })
-
-}
-
+  {
+    name: 'repo-storage',
+    storage: createJSONStorage(() => localStorage),
+    partialize: (state) => ({
+      files: state.files,
+      owner: state.owner,
+      repoName: state.repoName,
+      selectedFileContent: state.selectedFileContent,
+      GroqContent: state.GroqContent,
+      recentAnalyses: state.recentAnalyses, 
+    })
+  }
 ));

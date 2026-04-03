@@ -7,7 +7,6 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRepoStore } from '../Store/RepoStore';
 import toast from 'react-hot-toast';
-
 const Analyzer = () => {
   const navigate = useNavigate();
   const { files, owner, repoName, getFileContent, selectedFileContent, isLoading: storeLoading, GroqContent } = useRepoStore();
