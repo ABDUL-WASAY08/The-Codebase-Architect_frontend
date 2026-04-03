@@ -1,8 +1,8 @@
 import { create } from "zustand";
 import api from "../api/axios";
 import toast from "react-hot-toast";
-// import {} from "zustand/middleware"
-export const useRepoStore = create((set,get) => ({
+import {persist, createJSONStorage} from "zustand/middleware"
+export const useRepoStore = create(persist((set,get) => ({
   isLoading: false,
   repos: [],
   error: null,
@@ -103,4 +103,17 @@ export const useRepoStore = create((set,get) => ({
       set({ isLoading: false });
     }
   },
-}));
+}),
+{
+  name: 'repo-storage',
+  storage: createJSONStorage(()=>localStorage),
+  partialize:(state)=>({
+    files:state.files,
+    owner:state.owner,
+    repoName:state.repoName,
+    selectedFileContent:state.selectedFileContent
+  })
+
+}
+
+));
