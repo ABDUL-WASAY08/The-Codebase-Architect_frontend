@@ -1,13 +1,15 @@
 import { create } from "zustand";
 import api from "../api/axios";
-
-export const useRepoStore = create((set) => ({
+import toast from "react-hot-toast";
+// import {} from "zustand/middleware"
+export const useRepoStore = create((set,get) => ({
   isLoading: false,
   repos: [],
   error: null,
   files: [],
   owner: "",
   repoName: "",
+  selectedFileContent: null,
   getRepos: async () => {
     set({ isLoading: true, error: null });
     try {
@@ -69,6 +71,34 @@ export const useRepoStore = create((set) => ({
     } catch (error) {
       toast.error(error.response?.data?.message || "Analysis failed");
       return { success: false };
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+  getFileContent: async (path) => {
+    const { owner, repoName } = get();
+    
+    if (!owner || !repoName || !path) {
+      toast.error("Missing repository information");
+      return null;
+    }
+
+    set({ isLoading: true });
+    try {
+      const response = await api.post("/getFileContent", {
+        owner,
+        repo: repoName,
+        path,
+      });
+
+      if (response.data.success) {
+        set({ selectedFileContent: response.data.content });
+        return response.data.content;
+      }
+    } catch (error) {
+      console.error("File Content Error:", error);
+      toast.error(error.response?.data?.message || "Failed to load file content");
+      return null;
     } finally {
       set({ isLoading: false });
     }

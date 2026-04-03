@@ -3,22 +3,15 @@ import { GitBranchIcon, Eye, ExternalLink, LockIcon, Globe } from 'lucide-react'
 import { useRepoStore } from '../Store/RepoStore';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-
 const RepositoriesContent = () => {
   const navigate = useNavigate();
-  
-  // Zustand Store se states aur actions nikalna
   const { repos, isLoading, getRepos, openRepo } = useRepoStore();
-
   useEffect(() => {
-    // Agar repos pehle se nahi hain toh fetch karein
     if (repos.length === 0) {
       getRepos();
     }
   }, [getRepos, repos.length]);
-
   const handleAnalyze = async (repo) => {
-    // openRepo ko call kiya (Zustand state update ho jayegi)
     const result = await openRepo(repo); 
     
     if (result?.success) {
@@ -26,7 +19,6 @@ const RepositoriesContent = () => {
       navigate('/Analyzer');
     }
   };
-
   if (isLoading) {
     return (
       <div className="min-h-[93vh] flex items-center justify-center bg-white dark:bg-black">
@@ -39,7 +31,6 @@ const RepositoriesContent = () => {
       </div>
     );
   }
-
   return (
     <div className="min-h-[93vh] bg-white dark:bg-black p-4 sm:p-6 transition-colors">
       <div className="flex justify-between items-center mb-6">
@@ -53,7 +44,6 @@ const RepositoriesContent = () => {
           Refresh List
         </button>
       </div>
-
       <div className="space-y-4">
         {repos.length > 0 ? (
           repos.map((repo) => (
@@ -85,8 +75,6 @@ const RepositoriesContent = () => {
                     {repo.description || "No description provided for this repository."}
                   </p>
                 </div>
-
-                {/* Yahan onClick bind kar diya handleAnalyze ke saath */}
                 <button 
                   onClick={() => handleAnalyze(repo)}
                   className="whitespace-nowrap px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-600/10 active:scale-95"
@@ -95,8 +83,6 @@ const RepositoriesContent = () => {
                   <span>Start Analysis</span>
                 </button>
               </div>
-
-              {/* Bottom Meta Data */}
               <div className="flex flex-wrap items-center gap-4 border-t border-gray-100 dark:border-gray-900 pt-3">
                 <div className="flex items-center gap-1.5">
                   <div className={`w-2.5 h-2.5 rounded-full shadow-[0_0_8px_rgba(59,130,246,0.5)] ${repo.language ? 'bg-blue-500' : 'bg-gray-400'}`}></div>
@@ -104,11 +90,9 @@ const RepositoriesContent = () => {
                     {repo.language || "Misc"}
                   </span>
                 </div>
-                
                 <span className="text-[11px] text-gray-400 dark:text-gray-500">
                   Default Branch: <span className="font-mono text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">{repo.defaultBranch}</span>
                 </span>
-
                 <span className="text-[11px] text-gray-400 dark:text-gray-500 ml-auto italic">
                   Updated {new Date(repo.updatedAt).toLocaleDateString()}
                 </span>
@@ -124,5 +108,4 @@ const RepositoriesContent = () => {
     </div>
   );
 };
-
 export default RepositoriesContent;

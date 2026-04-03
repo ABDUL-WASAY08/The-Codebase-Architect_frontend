@@ -6,39 +6,24 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRepoStore } from '../Store/RepoStore'; 
-import api from '../api/axios';
 import toast from 'react-hot-toast';
 
 const Analyzer = () => {
   const navigate = useNavigate();
-  const { files, owner, repoName, isLoading: storeLoading } = useRepoStore();
+  const { files, owner, repoName, getFileContent, selectedFileContent, isLoading: storeLoading } = useRepoStore();
   
   const [selectedFile, setSelectedFile] = useState(null);
-  const [analysisData, setAnalysisData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [openToggle, setOpenToggle] = useState(false);
 
   const handleFileClick = async (path) => {
     setSelectedFile(path);
-    setLoading(true);
-    setAnalysisData(null);
-    
-    // Mobile menu close karein agar open hai
+    setLoading(true);   
     if (openToggle) setOpenToggle(false);
-
     try {
-      // Ab owner aur repo directly store se mil rahe hain
-      const response = await api.post('/analyze-file', { 
-        owner, 
-        repo: repoName, 
-        path 
-      });
-
-      if (response.data.success) {
-        setAnalysisData(response.data);
-      }
+      await getFileContent(path);
     } catch (error) {
-      toast.error("Failed to analyze file");
+      toast.error("Failed to load file content");
       console.error(error);
     } finally {
       setLoading(false);
@@ -48,8 +33,6 @@ const Analyzer = () => {
   return (
     <div className='bg-white dark:bg-black'>
       <div className="flex h-screen bg-white dark:bg-black text-white overflow-hidden">
-        
-        {/* Sidebar - Desktop */}
         <div className="hidden md:block w-80 border-r border-white/10 flex flex-col bg-[#0d0d0f]">
           <div className="p-4 border-b border-white/10 flex items-center justify-between">
             <button
@@ -100,7 +83,7 @@ const Analyzer = () => {
                 </div>
                 <h2 className="text-2xl font-bold mb-2 text-white">Select a file to start</h2>
                 <p className="text-gray-500 max-w-md">
-                  Analyzing repository: <b>{owner}/{repoName}</b>. Choose a file to see AI insights.
+                  Analyzing repository: <b>{owner}/{repoName}</b>. Choose a file to see the source code.
                 </p>
               </motion.div>
             ) : (
@@ -120,32 +103,21 @@ const Analyzer = () => {
                   </div>
                 </div>
 
-                {loading ? (
+                {loading || storeLoading ? (
                   <div className="flex flex-col items-center justify-center py-20">
                     <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-                    <p className="mt-4 text-gray-400 font-mono">Groq LPU is thinking...</p>
+                    <p className="mt-4 text-gray-400 font-mono">Fetching file content...</p>
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 gap-8">
-                    {/* AI Insights Section */}
-                    <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-xl">
-                      <div className="flex items-center gap-2 mb-4 text-emerald-400">
-                        <Cpu size={20} />
-                        <span className="text-sm font-bold uppercase tracking-wider">AI Insights</span>
-                      </div>
-                      <div className="prose prose-invert max-w-none text-gray-300 leading-relaxed whitespace-pre-wrap">
-                        {analysisData?.analysis || "No analysis available for this file."}
-                      </div>
-                    </div>
-
                     {/* Source Code Section */}
                     <div className="bg-[#050505] border border-white/5 rounded-2xl p-6 overflow-hidden">
                       <div className="flex items-center gap-2 mb-4 text-blue-400">
                         <Code size={20} />
                         <span className="text-sm font-bold uppercase tracking-wider">Source Code</span>
                       </div>
-                      <pre className="text-xs font-mono text-gray-400 overflow-x-auto p-4 bg-black/50 rounded-lg">
-                        <code>{analysisData?.code || "Code content not loaded."}</code>
+                      <pre className="text-xs font-mono text-gray-400 overflow-x-auto p-4 bg-black/50 rounded-lg border border-white/5 shadow-inner">
+                        <code className="whitespace-pre">{selectedFileContent || "Code content not loaded."}</code>
                       </pre>
                     </div>
                   </div>
