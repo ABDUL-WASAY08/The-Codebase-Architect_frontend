@@ -68,7 +68,7 @@ const Navbar = ({activeComp,setActiveComp}) => {
                                 }}
                                 >
                                     <GitBranchIcon size={16} />
-                                    Repo
+                                    Analyzer
                                 </button>
                                 <hr className="my-1 border-gray-200 dark:border-gray-700" />
                                 <button
