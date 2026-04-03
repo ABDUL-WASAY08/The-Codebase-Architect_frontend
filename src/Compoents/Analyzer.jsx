@@ -5,20 +5,20 @@ import {
   Cpu, Zap, Code, MenuIcon
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useRepoStore } from '../Store/RepoStore'; 
+import { useRepoStore } from '../Store/RepoStore';
 import toast from 'react-hot-toast';
 
 const Analyzer = () => {
   const navigate = useNavigate();
-  const { files, owner, repoName, getFileContent, selectedFileContent, isLoading: storeLoading } = useRepoStore();
-  
+  const { files, owner, repoName, getFileContent, selectedFileContent, isLoading: storeLoading, GroqContent } = useRepoStore();
+
   const [selectedFile, setSelectedFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [openToggle, setOpenToggle] = useState(false);
 
   const handleFileClick = async (path) => {
     setSelectedFile(path);
-    setLoading(true);   
+    setLoading(true);
     if (openToggle) setOpenToggle(false);
     try {
       await getFileContent(path);
@@ -55,11 +55,10 @@ const Analyzer = () => {
                 <button
                   key={file.path}
                   onClick={() => handleFileClick(file.path)}
-                  className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-all group ${
-                    selectedFile === file.path
-                    ? 'bg-blue-600/20 text-blue-400 border border-blue-600/30'
-                    : 'text-gray-400 hover:bg-white/5 hover:text-gray-200'
-                  }`}
+                  className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-all group ${selectedFile === file.path
+                      ? 'bg-blue-600/20 text-blue-400 border border-blue-600/30'
+                      : 'text-gray-400 hover:bg-white/5 hover:text-gray-200'
+                    }`}
                 >
                   <FileCode size={16} className={selectedFile === file.path ? 'text-blue-400' : 'text-gray-500'} />
                   <span className="truncate text-left">{file.path.split('/').pop()}</span>
@@ -69,6 +68,7 @@ const Analyzer = () => {
           </div>
         </div>
 
+        {/* Main Content Area */}
         {/* Main Content Area */}
         <div className="flex-1 flex flex-col relative bg-[#0a0a0c]">
           <AnimatePresence mode="wait">
@@ -83,7 +83,7 @@ const Analyzer = () => {
                 </div>
                 <h2 className="text-2xl font-bold mb-2 text-white">Select a file to start</h2>
                 <p className="text-gray-500 max-w-md">
-                  Analyzing repository: <b>{owner}/{repoName}</b>. Choose a file to see the source code.
+                  Analyzing repository: <b>{owner}/{repoName}</b>. Choose a file to see the source code and AI insights.
                 </p>
               </motion.div>
             ) : (
@@ -106,11 +106,12 @@ const Analyzer = () => {
                 {loading || storeLoading ? (
                   <div className="flex flex-col items-center justify-center py-20">
                     <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-                    <p className="mt-4 text-gray-400 font-mono">Fetching file content...</p>
+                    <p className="mt-4 text-gray-400 font-mono">Analyzing with Groq LPU...</p>
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 gap-8">
-                    {/* Source Code Section */}
+
+                    {/* 1. Source Code Section */}
                     <div className="bg-[#050505] border border-white/5 rounded-2xl p-6 overflow-hidden">
                       <div className="flex items-center gap-2 mb-4 text-blue-400">
                         <Code size={20} />
@@ -120,6 +121,24 @@ const Analyzer = () => {
                         <code className="whitespace-pre">{selectedFileContent || "Code content not loaded."}</code>
                       </pre>
                     </div>
+
+                    {/* 2. Groq AI Analysis Section (Added here) */}
+                    <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm">
+                      <div className="flex items-center gap-2 mb-4 text-emerald-400">
+                        <Cpu size={20} />
+                        <span className="text-sm font-bold uppercase tracking-wider">AI Analysis</span>
+                      </div>
+                      <div className="prose prose-invert max-w-none">
+                        <div className="text-gray-300 text-sm leading-relaxed whitespace-pre-wrap font-sans">
+                          {GroqContent ? (
+                            GroqContent
+                          ) : (
+                            <span className="text-gray-500 italic">No analysis available for this file.</span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
                   </div>
                 )}
               </motion.div>
@@ -130,13 +149,13 @@ const Analyzer = () => {
 
       {/* Floating Controls for Mobile */}
       <div className="md:hidden fixed top-6 right-6 z-50 flex gap-2">
-        <button 
+        <button
           onClick={() => navigate('/dashboard')}
           className="bg-white/10 backdrop-blur-md p-3 rounded-full text-white border border-white/20"
         >
           <ArrowLeft size={18} />
         </button>
-        <button 
+        <button
           onClick={() => setOpenToggle(!openToggle)}
           className="bg-blue-600 p-3 rounded-full text-white shadow-lg flex items-center gap-2 px-4"
         >
@@ -176,11 +195,10 @@ const Analyzer = () => {
                   <button
                     key={file.path}
                     onClick={() => handleFileClick(file.path)}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all ${
-                      selectedFile === file.path
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-white/5 text-gray-400'
-                    }`}
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all ${selectedFile === file.path
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-white/5 text-gray-400'
+                      }`}
                   >
                     <FileCode size={18} />
                     <span className="truncate">{file.path.split('/').pop()}</span>

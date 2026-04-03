@@ -10,6 +10,7 @@ export const useRepoStore = create(persist((set,get) => ({
   owner: "",
   repoName: "",
   selectedFileContent: null,
+  GroqContent:null,
   getRepos: async () => {
     set({ isLoading: true, error: null });
     try {
@@ -92,7 +93,7 @@ export const useRepoStore = create(persist((set,get) => ({
       });
 
       if (response.data.success) {
-        set({ selectedFileContent: response.data.content });
+        set({ selectedFileContent: response.data.content,GroqContent:response.data.analysis });
         return response.data.content;
       }
     } catch (error) {
@@ -111,7 +112,8 @@ export const useRepoStore = create(persist((set,get) => ({
     files:state.files,
     owner:state.owner,
     repoName:state.repoName,
-    selectedFileContent:state.selectedFileContent
+    selectedFileContent:state.selectedFileContent,
+    GroqContent:state.GroqContent,
   })
 
 }

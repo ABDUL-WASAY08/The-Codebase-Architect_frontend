@@ -16,8 +16,7 @@ const SideBarContent = ({ activeComp, setActiveComp }) => {
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
-                setIsOpen(false);
-            }
+                setIsOpen(false);}
         };
         if (isOpen) {
             document.addEventListener('mousedown', handleClickOutside);
@@ -40,8 +39,7 @@ const SideBarContent = ({ activeComp, setActiveComp }) => {
                     fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-black 
                     transition-transform duration-300 ease-in-out transform
                     ${isOpen ? 'translate-x-0' : '-translate-x-full'} 
-                    lg:translate-x-0 lg:static lg:block
-                `}
+                    lg:translate-x-0 lg:static lg:block`}
             >
                 <nav className="p-4 space-y-1 mt-16 lg:mt-0">
                     {sidebarItems.map((item) => {
@@ -69,13 +67,10 @@ const SideBarContent = ({ activeComp, setActiveComp }) => {
                     })}
                 </nav>
             </div>
-
-            {/* Overlay */}
             {isOpen && (
                 <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden" />
             )}
         </>
     );
 };
-
 export default SideBarContent;
