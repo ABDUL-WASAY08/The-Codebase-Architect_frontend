@@ -110,8 +110,6 @@ const Analyzer = () => {
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 gap-8">
-
-                    {/* 1. Source Code Section */}
                     <div className="bg-[#050505] border border-white/5 rounded-2xl p-6 overflow-hidden">
                       <div className="flex items-center gap-2 mb-4 text-blue-400">
                         <Code size={20} />
@@ -121,8 +119,6 @@ const Analyzer = () => {
                         <code className="whitespace-pre">{selectedFileContent || "Code content not loaded."}</code>
                       </pre>
                     </div>
-
-                    {/* 2. Groq AI Analysis Section (Added here) */}
                     <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm">
                       <div className="flex items-center gap-2 mb-4 text-emerald-400">
                         <Cpu size={20} />
