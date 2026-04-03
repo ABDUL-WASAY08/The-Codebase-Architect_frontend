@@ -6,10 +6,10 @@ import {
 import { useRepoStore } from '../Store/RepoStore';
 import toast from 'react-hot-toast';
 import api from '../api/axios';
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 const DashboardContent = () => {
-  const navigate=useNavigate()
-  const { repos, isLoading, getRepos } = useRepoStore();
+  const navigate = useNavigate()
+  const { repos, isLoading, getRepos, files, openRepo } = useRepoStore();
   const [repoUrl, setRepoUrl] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   useEffect(() => {
@@ -17,38 +17,10 @@ const DashboardContent = () => {
   }, [getRepos]);
 
   const handleAnalyze = async (repo) => {
-    try {
-      setIsAnalyzing(true);
-      const urlToAnalyze = repo?.url || repoUrl;
-      if (!urlToAnalyze) return;
-
-      const regex = /github\.com\/([^/]+)\/([^/]+)/;
-      const match = urlToAnalyze.match(regex);
-      
-      if (!match) {
-        toast.error('Invalid GitHub URL');
-        setIsAnalyzing(false);
-        return;
-      }
-      const owner = match[1];
-      const repoName = match[2].replace('.git', "");
-      const response = await api.post('/getTree', {
-        owner,
-        repo: repoName,
-        branch: repo?.defaultBranch || "main"
-      });
-
-      if (response.data.success) {
-        toast.success('File tree fetched!');
-        console.log("Files:", response.data.files);
-        navigate('/Analyzer', { state: { files: response.data.files, fullName: `${owner}/${repoName}` } });
-      }
-
-    } catch (error) {
-      console.error(error);
-      toast.error(error.response?.data?.message || 'Analysis failed');
-    } finally {
-      setIsAnalyzing(false);
+    const result = await openRepo(repo, repoUrl);
+    if (result?.success) {
+      toast.success('File tree fetched!');
+      navigate('/Analyzer');
     }
   };
 
