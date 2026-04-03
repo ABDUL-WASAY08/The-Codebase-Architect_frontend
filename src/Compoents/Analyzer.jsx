@@ -9,13 +9,14 @@ import { useRepoStore } from '../Store/RepoStore';
 import toast from 'react-hot-toast';
 const Analyzer = () => {
   const navigate = useNavigate();
-  const { files, owner, repoName, getFileContent, selectedFileContent, isLoading: storeLoading, GroqContent } = useRepoStore();
+  const { files, owner, repoName, getFileContent, selectedFileContent, isLoading, storeLoading, GroqContent } = useRepoStore();
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [openToggle, setOpenToggle] = useState(false);
 
   const handleFileClick = async (path) => {
+    if (isLoading) return;
     setSelectedFile(path);
     setLoading(true);
     if (openToggle) setOpenToggle(false);

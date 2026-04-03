@@ -76,15 +76,18 @@ const AnalyzeContent = () => {
               <div className="grid gap-3">
                 {recentRepos.map((file, index) => (
                   <div
-                    key={index} 
+                    key={index}
                     className="flex justify-between items-center p-4 bg-gray-50 dark:bg-gray-900/40 rounded-xl border border-gray-100 dark:border-gray-800 hover:border-blue-500/30 transition-all group"
+                    onClick={() => navigate('/Analyzer')}
                   >
-                    <div className="flex flex-col">
+                    <div className="flex flex-col"
+
+                    >
                       <span className="font-bold text-gray-900 dark:text-gray-100 group-hover:text-blue-500 transition-colors">
                         {file.fileName}
                       </span>
                       <span className="text-xs text-gray-500 italic">
-                        from: {file.repoName} 
+                        from: {file.repoName}
                       </span>
                     </div>
                     <button
@@ -99,7 +102,7 @@ const AnalyzeContent = () => {
             </div>
           )}
 
-         
+
           <div className="bg-blue-50/50 dark:bg-blue-900/10 rounded-2xl p-5 border border-blue-100/50 dark:border-blue-900/30">
             <div className="flex items-center gap-2 mb-3 text-blue-900 dark:text-blue-300">
               <Lightbulb size={18} />

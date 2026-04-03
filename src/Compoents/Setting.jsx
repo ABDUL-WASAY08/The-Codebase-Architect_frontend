@@ -6,7 +6,9 @@ const SettingsContent = ({ user,theme,setTheme }) => {
     const selected = e.target.value;
     setTheme(selected.toLowerCase());
   };
-
+const GenerateApiKey=()=>{
+  
+}
   return (
     <div className="min-h-[93vh] bg-white dark:bg-black  p-6 transition-colors">
       <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Settings</h2>
@@ -28,12 +30,14 @@ const SettingsContent = ({ user,theme,setTheme }) => {
             <option>Dark</option>
           </select>
         </div>
-        <div>
+        {/* <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">API Key Management</label>
-          <button className="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 px-4 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
-            Regenerate API Key
+          <button className="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 px-4 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+          onClick={GenerateApiKey}
+          >
+            Regenerate Api Key
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );

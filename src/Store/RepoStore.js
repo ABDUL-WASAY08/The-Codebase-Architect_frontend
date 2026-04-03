@@ -104,7 +104,7 @@ export const useRepoStore = create(persist((set, get) => ({
           repoName: repoName
         };
         const filtered = recentAnalyses.filter(item => item.path !== path);
-        const updatedRecent = [newEntry, ...filtered].slice(0, 3);
+        const updatedRecent = [newEntry, ...filtered].slice(0, 1);
 
         set({
           selectedFileContent: response.data.content,
