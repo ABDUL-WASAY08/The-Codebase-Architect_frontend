@@ -43,7 +43,8 @@ function ChromeExtension() {
                 in the address bar.
               </li>
               <li>On Top-right click <b>Developer Mode</b> to on Developer Mode</li>
-              <li><b>clcik on Load Unpacked on top left usually </b>a pop appears and select the extracted folder name my-extension </li>
+              <li><b>clcik on Load Unpacked on top left usually </b>a pop appears and select the extracted folder name my-extension inside the Code Based extension </li>
+               <li className='text-red-800'>you must add folder name <b>my-extension in side the code based extension</b></li>
               <li>Now go check your<b>Github</b></li>
             </ol>
           </div>
