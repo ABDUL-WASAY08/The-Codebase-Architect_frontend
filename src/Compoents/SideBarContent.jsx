@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Home, FolderGit2, BarChart3, Settings, Menu, X ,Gift} from 'lucide-react';
+import { Home, FolderGit2, BarChart3, Settings, Menu, X, Gift } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 const SideBarContent = ({ activeComp, setActiveComp }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -9,15 +10,30 @@ const SideBarContent = ({ activeComp, setActiveComp }) => {
         { name: 'Dashboard', icon: Home },
         { name: 'Repositories', icon: FolderGit2 },
         { name: 'Analyze', icon: BarChart3 },
-         { name: 'ChromeExtension', icon: Gift },
+        { name: 'ChromeExtension', icon: Gift },
         { name: 'Settings', icon: Settings },
-       
     ];
+
+    
+    const isMobileDevice = () => {
+        return window.innerWidth < 1024; 
+    };
+
+    const handleItemClick = (itemName) => {
+        if (itemName === 'ChromeExtension' && isMobileDevice()) {
+            toast.error("Feature not available in mobile. Please go to your laptop.");
+            setIsOpen(false); 
+            return; 
+        }
+        setActiveComp(itemName);
+        setIsOpen(false);
+    };
 
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
-                setIsOpen(false);}
+                setIsOpen(false);
+            }
         };
         if (isOpen) {
             document.addEventListener('mousedown', handleClickOutside);
@@ -27,13 +43,14 @@ const SideBarContent = ({ activeComp, setActiveComp }) => {
 
     return (
         <>
-            {/* Mobile Button */}
+            
             <button
                 onClick={() => setIsOpen(!isOpen)}
                 className='lg:hidden fixed bottom-4 right-4 z-[60] bg-blue-600 text-white p-3 rounded-full shadow-xl'
             >
                 {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
+
             <div
                 ref={sidebarRef}
                 className={`
@@ -45,20 +62,15 @@ const SideBarContent = ({ activeComp, setActiveComp }) => {
                 <nav className="p-4 space-y-1 mt-16 lg:mt-0">
                     {sidebarItems.map((item) => {
                         const Icon = item.icon;
-
-                        // FIX: Check if this specific item is the active one
                         const isActive = activeComp === item.name;
 
                         return (
                             <div
                                 key={item.name}
-                                onClick={() => {
-                                    setIsOpen(false);
-                                    setActiveComp(item.name);
-                                }}
+                                onClick={() => handleItemClick(item.name)}
                                 className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 cursor-pointer ${isActive
-                                        ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 shadow-sm'
-                                        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                                    ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 shadow-sm'
+                                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
                                     }`}
                             >
                                 <Icon size={20} />
@@ -74,4 +86,5 @@ const SideBarContent = ({ activeComp, setActiveComp }) => {
         </>
     );
 };
+
 export default SideBarContent;
