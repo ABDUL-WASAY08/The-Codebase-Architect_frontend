@@ -73,7 +73,7 @@ export const useRepoStore = create(persist((set, get) => ({
       }
     } catch (error) {
       toast.error("this file cant not be analysed");
-      set({GroqContent:null})
+      set({GroqContent:null,selectedFileContent:null})
       return { success: false };
     } finally {
       set({ isLoading: false });
@@ -116,7 +116,7 @@ export const useRepoStore = create(persist((set, get) => ({
       }
     } catch (error) {
       toast.error("No data found for analysis");
-      set({GroqContent:null})
+      set({GroqContent:null,selectedFileContent:null})
       return null;
     } finally {
       set({ isLoading: false });

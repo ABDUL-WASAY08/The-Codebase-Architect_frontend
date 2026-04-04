@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
   ArrowLeft, FileCode, Terminal,
   Cpu, Zap, Code, MenuIcon
@@ -7,14 +7,36 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRepoStore } from '../Store/RepoStore';
 import toast from 'react-hot-toast';
+import { useEffect } from 'react';
 const Analyzer = () => {
   const navigate = useNavigate();
-  const { files, owner, repoName, getFileContent, selectedFileContent, isLoading, storeLoading, GroqContent } = useRepoStore();
+  const { openRepo, files, owner, repoName, getFileContent, selectedFileContent, isLoading, storeLoading, GroqContent } = useRepoStore();
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [openToggle, setOpenToggle] = useState(false);
+  const [searchParams] = useSearchParams();
+  useEffect(() => {
+    const handleAutoAnalysis = async () => {
+      const searchParams = new URLSearchParams(window.location.search);
+      const repoUrl = searchParams.get('repoUrl');
+      const filePath = searchParams.get('filePath');
+      const type = searchParams.get('type'); 
+      if (repoUrl && repoUrl !== 'undefined') {
+        setLoading(true);
+        const result = await openRepo(null, repoUrl);
+        if (result?.success && filePath && filePath !== 'undefined' && type !== 'folder') {
+          setSelectedFile(filePath);
+          await getFileContent(filePath);
+        } else if (type === 'folder') {
+          setSelectedFile(null);
+        }
+        setLoading(false);
+      }
+    };
 
+    handleAutoAnalysis();
+  }, [searchParams]);
   const handleFileClick = async (path) => {
     if (isLoading) return;
     setSelectedFile(path);
@@ -56,8 +78,8 @@ const Analyzer = () => {
                   key={file.path}
                   onClick={() => handleFileClick(file.path)}
                   className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-all group ${selectedFile === file.path
-                      ? 'bg-blue-600/20 text-blue-400 border border-blue-600/30'
-                      : 'text-gray-400 hover:bg-white/5 hover:text-gray-200'
+                    ? 'bg-blue-600/20 text-blue-400 border border-blue-600/30'
+                    : 'text-gray-400 hover:bg-white/5 hover:text-gray-200'
                     }`}
                 >
                   <FileCode size={16} className={selectedFile === file.path ? 'text-blue-400' : 'text-gray-500'} />
@@ -67,8 +89,6 @@ const Analyzer = () => {
             </div>
           </div>
         </div>
-
-        {/* Main Content Area */}
         {/* Main Content Area */}
         <div className="flex-1 flex flex-col relative bg-[#0a0a0c]">
           <AnimatePresence mode="wait">
@@ -106,7 +126,7 @@ const Analyzer = () => {
                 {loading || storeLoading ? (
                   <div className="flex flex-col items-center justify-center py-20">
                     <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-                    <p className="mt-4 text-gray-400 font-mono">Analyzing with Groq LPU...</p>
+                    <p className="mt-4 text-gray-400 font-mono">Analyzing the Code</p>
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 gap-8">
@@ -192,8 +212,8 @@ const Analyzer = () => {
                     key={file.path}
                     onClick={() => handleFileClick(file.path)}
                     className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all ${selectedFile === file.path
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-white/5 text-gray-400'
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-white/5 text-gray-400'
                       }`}
                   >
                     <FileCode size={18} />

@@ -21,13 +21,30 @@ function ChromeExtension() {
               <p className='text-sm text-gray-600 dark:text-gray-400'>Always get the latest features</p>
             </div>
           </div>
-        
-          <div className='flex flex-col sm:flex-row gap-4 justify-center mb-12'>
-            <button 
-              className='px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl'
+
+          <div className='bg-blue-700 inline text-white p-2 rounded flex flex-col sm:flex-row gap-4 justify-center mb-12'>
+            <a
+              href="./extension/Code_based_Extension.zip"
+              download="codebase-architect.zip"
+              className="..."
             >
-               Add to Chrome
-            </button>
+              Download Extension
+            </a>
+          </div>
+          <div className='mt-8 p-6 bg-gray-50 dark:bg-gray-900 rounded-xl border border-dashed border-gray-300 dark:border-gray-700 max-w-lg mx-auto'>
+            <h4 className='text-gray-900 dark:text-white font-bold mb-3'>Installation Steps:</h4>
+            <ol className='text-left text-sm text-gray-600 dark:text-gray-400 space-y-2 list-decimal ml-4'>
+              <li>Download Zip folder By Clicking above button <b>Extract files</b> from it</li>
+              <li>
+                Open Chrome Browser and paste
+                <code className='bg-gray-200 dark:bg-gray-800 px-2 py-1 rounded mx-1 text-blue-600'>
+                  chrome://extensions/
+                </code>
+                in the address bar.
+              </li>
+              <li>On Top-right click <b>Developer Mode</b> to on Developer Mode</li>
+              <li><b>clcik on Load Unpacked</b>a pop appears and select the extracted files </li>
+            </ol>
           </div>
         </div>
       </div>
