@@ -1,138 +1,141 @@
 import { create } from "zustand";
 import api from "../api/axios";
 import toast from "react-hot-toast";
-import { persist, createJSONStorage } from "zustand/middleware"
+import { persist, createJSONStorage } from "zustand/middleware";
 
-export const useRepoStore = create(persist((set, get) => ({
-  isLoading: false,
-  repos: [],
-  error: null,
-  files: [],
-  owner: "",
-  repoName: "",
-  selectedFileContent: null,
-  GroqContent: null,
-  recentAnalyses: [],
-  getRepos: async () => {
-    set({ isLoading: true, error: null });
-    try {
-      const response = await api.get("/getRepo");
-      if (response.data.success) {
-        set({
-          repos: response.data.repos,
-          isLoading: false,
-        });
-      }
-    } catch (error) {
-      console.error("Store Error:", error);
-      set({
-        isLoading: false,
-        error: error.response?.data?.message || "Failed to fetch repos",
-      });
-    }
-  },
+export const useRepoStore = create(
+  persist(
+    (set, get) => ({
+      isLoading: false,
+      repos: [],
+      error: null,
+      files: [],
+      owner: "",
+      repoName: "",
+      selectedFileContent: null,
+      GroqContent: null,
+      recentAnalyses: [],
+      getRepos: async () => {
+        set({ isLoading: true, error: null });
+        try {
+          const response = await api.get("/getRepo");
+          if (response.data.success) {
+            set({
+              repos: response.data.repos,
+              isLoading: false,
+            });
+          }
+        } catch (error) {
+          console.error("Store Error:", error);
+          set({
+            isLoading: false,
+            error: error.response?.data?.message || "Failed to fetch repos",
+          });
+        }
+      },
 
-  openRepo: async (repo, repoUrl) => {
-    try {
-      set({ isLoading: true });
-      const urlToAnalyze = repo?.url || repoUrl;
+      
+      openRepo: async (repo, repoUrl) => {
+        try {
+          set({ isLoading: true, files: [] });
+          const urlToAnalyze = repo?.url || repoUrl;
 
-      if (!urlToAnalyze) {
-        set({ isLoading: false });
-        return { success: false };
-      }
+          if (!urlToAnalyze) {
+            set({ isLoading: false });
+            return { success: false };
+          }
+          const match = urlToAnalyze.match(
+            /github\.com\/([^/]+)\/([^/]+?)(?:\.git|\/)?$/,
+          );
 
-      const regex = /github\.com\/([^/]+)\/([^/]+)/;
-      const match = urlToAnalyze.match(regex);
+          if (!match) {
+            toast.error("Invalid GitHub URL");
+            set({ isLoading: false });
+            return { success: false };
+          }
 
-      if (!match) {
-        toast.error("Invalid GitHub URL");
-        set({ isLoading: false });
-        return { success: false };
-      }
+          const owner = match[1];
+          const repoName = match[2];
 
-      const owner = match[1];
-      const repoName = match[2].replace(".git", "");
+          const response = await api.post("/getTree", {
+            owner,
+            repo: repoName,
+            branch: repo?.defaultBranch || "main",
+          });
 
-      const response = await api.post("/getTree", {
-        owner,
-        repo: repoName,
-        branch: repo?.defaultBranch || "main",
-      });
+          if (response.data.success) {
+            set({
+              files: response.data.files,
+              owner: owner,
+              repoName: repoName,
+              isLoading: false,
+            });
+            return { success: true };
+          }
+        } catch (error) {
+          console.error("Tree Fetch Error:", error);
+          toast.error("Failed to fetch repository tree");
+          set({ files: [], isLoading: false });
+          return { success: false };
+        }
+      },
 
-      if (response.data.success) {
-        const fetchedFiles = response.data.files;
-        set({
-          files: fetchedFiles,
-          owner: owner,
-          repoName: repoName,
-          isLoading: false,
-        });
+      getFileContent: async (path) => {
+        const { owner, repoName, recentAnalyses } = get();
 
-        return { success: true };
-      }
-    } catch (error) {
-      toast.error("this file cant not be analysed");
-      set({GroqContent:null,selectedFileContent:null})
-      return { success: false };
-    } finally {
-      set({ isLoading: false });
-    }
-  },
+        if (!owner || !repoName || !path) {
+          toast.error("Missing repository information");
+          return null;
+        }
 
-  getFileContent: async (path) => {
-    const { owner, repoName, recentAnalyses } = get();
+        set({ isLoading: true });
+        try {
+          const response = await api.post("/getFileContent", {
+            owner,
+            repo: repoName,
+            path,
+          });
 
-    if (!owner || !repoName || !path) {
-      toast.error("Missing repository information");
-      return null;
-    }
+          if (response.data.success) {
+            const newEntry = {
+              fileName: path.split("/").pop(),
+              path: path,
+              analysis: response.data.analysis,
+              repoName: repoName,
+            };
+            const filtered = recentAnalyses.filter(
+              (item) => item.path !== path,
+            );
+            const updatedRecent = [newEntry, ...filtered].slice(0, 1);
 
-    set({ isLoading: true });
-    try {
-      const response = await api.post("/getFileContent", {
-        owner,
-        repo: repoName,
-        path,
-      });
+            set({
+              selectedFileContent: response.data.content,
+              GroqContent: response.data.analysis,
+              recentAnalyses: updatedRecent,
+            });
 
-      if (response.data.success) {
-        const newEntry = {
-          fileName: path.split('/').pop(),
-          path: path,
-          analysis: response.data.analysis,
-          repoName: repoName
-        };
-        const filtered = recentAnalyses.filter(item => item.path !== path);
-        const updatedRecent = [newEntry, ...filtered].slice(0, 1);
-
-        set({
-          selectedFileContent: response.data.content,
-          GroqContent: response.data.analysis,
-          recentAnalyses: updatedRecent
-        });
-
-        return response.data.content;
-      }
-    } catch (error) {
-      toast.error("No data found for analysis");
-      set({GroqContent:null,selectedFileContent:null})
-      return null;
-    } finally {
-      set({ isLoading: false });
-    }
-  },
-}),
-  {
-    name: 'repo-storage',
-    storage: createJSONStorage(() => localStorage),
-    partialize: (state) => ({
-      files: state.files,
-      owner: state.owner,
-      repoName: state.repoName,
-      selectedFileContent: state.selectedFileContent,
-      GroqContent: state.GroqContent,
-      recentAnalyses: state.recentAnalyses, 
-    })
-  }
-));
+            return response.data.content;
+          }
+        } catch (error) {
+          toast.error("No data found for analysis");
+          set({ GroqContent: null, selectedFileContent: null });
+          return null;
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+    }),
+    {
+      name: "repo-storage",
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({
+        files: state.files,
+        owner: state.owner,
+        repoName: state.repoName,
+        selectedFileContent: state.selectedFileContent,
+        GroqContent: state.GroqContent,
+        recentAnalyses: state.recentAnalyses,
+      }),
+    },
+  ),
+);

@@ -18,13 +18,15 @@ const Analyzer = () => {
   const [searchParams] = useSearchParams();
   useEffect(() => {
     const handleAutoAnalysis = async () => {
-      const searchParams = new URLSearchParams(window.location.search);
       const repoUrl = searchParams.get('repoUrl');
       const filePath = searchParams.get('filePath');
-      const type = searchParams.get('type'); 
+      const type = searchParams.get('type');
+
       if (repoUrl && repoUrl !== 'undefined') {
         setLoading(true);
+        // Direct call to openRepo with URL
         const result = await openRepo(null, repoUrl);
+
         if (result?.success && filePath && filePath !== 'undefined' && type !== 'folder') {
           setSelectedFile(filePath);
           await getFileContent(filePath);
@@ -36,7 +38,7 @@ const Analyzer = () => {
     };
 
     handleAutoAnalysis();
-  }, [searchParams]);
+  }, [searchParams, openRepo, getFileContent]);
   const handleFileClick = async (path) => {
     if (isLoading) return;
     setSelectedFile(path);
