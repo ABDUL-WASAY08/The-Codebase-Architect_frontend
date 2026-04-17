@@ -42,11 +42,11 @@ const SideBarContent = ({ activeComp, setActiveComp }) => {
     }, [isOpen]);
 
     return (
-        <>
+        <div className='sticky left'>
             
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className='lg:hidden fixed bottom-4 right-4 z-[60] bg-blue-600 text-white p-3 rounded-full shadow-xl'
+                className='lg:hidden fixed bottom-4 right-4 z-[60] bg-gray-600 text-white p-3 rounded-full shadow-xl'
             >
                 {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -69,8 +69,8 @@ const SideBarContent = ({ activeComp, setActiveComp }) => {
                                 key={item.name}
                                 onClick={() => handleItemClick(item.name)}
                                 className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 cursor-pointer ${isActive
-                                    ? 'bg-gary-50 dark:bg-gary-900/30 text-gary-900 dark:text-black shadow-sm'
-                                    : 'text-gray-50 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                                    ? 'bg-gary-50 dark:bg-gary-900/30 text-gary-900 dark:text-gary-400 shadow-sm'
+                                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
                                     }`}
                             >
                                 <Icon size={20} />
@@ -83,7 +83,7 @@ const SideBarContent = ({ activeComp, setActiveComp }) => {
             {isOpen && (
                 <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden" />
             )}
-        </>
+        </div>
     );
 };
 
