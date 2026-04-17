@@ -14,16 +14,15 @@ const SideBarContent = ({ activeComp, setActiveComp }) => {
         { name: 'Settings', icon: Settings },
     ];
 
-    
     const isMobileDevice = () => {
-        return window.innerWidth < 1024; 
+        return window.innerWidth < 1024;
     };
 
     const handleItemClick = (itemName) => {
         if (itemName === 'ChromeExtension' && isMobileDevice()) {
             toast.error("Feature not available in mobile. Please go to your laptop.");
-            setIsOpen(false); 
-            return; 
+            setIsOpen(false);
+            return;
         }
         setActiveComp(itemName);
         setIsOpen(false);
@@ -42,46 +41,65 @@ const SideBarContent = ({ activeComp, setActiveComp }) => {
     }, [isOpen]);
 
     return (
-        <div className='sticky left'>
-            
+        <div className='relative'>
+            {/* Mobile menu button */}
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className='lg:hidden fixed bottom-4 right-4 z-[60] bg-gray-600 text-white p-3 rounded-full shadow-xl'
+                className='lg:hidden fixed bottom-4 right-4 z-[60] bg-gray-800 text-white p-3 rounded-full shadow-xl hover:bg-gray-700 transition-colors'
             >
                 {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
 
+            {/* Sidebar */}
             <div
                 ref={sidebarRef}
                 className={`
-                    fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-black 
+                    fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800
                     transition-transform duration-300 ease-in-out transform
                     ${isOpen ? 'translate-x-0' : '-translate-x-full'} 
-                    lg:translate-x-0 lg:static lg:block`}
+                    lg:translate-x-0 lg:sticky lg:top-0 lg:h-screen
+                `}
             >
-                <nav className="p-4 space-y-1 mt-16 lg:mt-0">
-                    {sidebarItems.map((item) => {
-                        const Icon = item.icon;
-                        const isActive = activeComp === item.name;
+                <div className="h-full overflow-y-auto">
+                    {/* Logo/Header */}
+                    <div className="p-4 border-b border-gray-200 dark:border-gray-800">
+                        <h2 className="text-xl font-bold text-gray-800 dark:text-white">CodeBase</h2>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Analysis Platform</p>
+                    </div>
 
-                        return (
-                            <div
-                                key={item.name}
-                                onClick={() => handleItemClick(item.name)}
-                                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 cursor-pointer ${isActive
-                                    ? 'bg-gary-50 dark:bg-gary-900/30 text-gary-900 dark:text-gary-400 shadow-sm'
-                                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
-                                    }`}
-                            >
-                                <Icon size={20} />
-                                <span className="font-medium">{item.name}</span>
-                            </div>
-                        );
-                    })}
-                </nav>
+                    {/* Navigation */}
+                    <nav className="p-4 space-y-1">
+                        {sidebarItems.map((item) => {
+                            const Icon = item.icon;
+                            const isActive = activeComp === item.name;
+
+                            return (
+                                <div
+                                    key={item.name}
+                                    onClick={() => handleItemClick(item.name)}
+                                    className={`
+                                        flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 cursor-pointer
+                                        ${isActive
+                                            ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white shadow-sm'
+                                            : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50'
+                                        }
+                                    `}
+                                >
+                                    <Icon size={20} />
+                                    <span className="font-medium">{item.name}</span>
+                                </div>
+                            );
+                        })}
+                    </nav>
+                </div>
             </div>
+
+            {/* Backdrop overlay for mobile */}
             {isOpen && (
-                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden" />
+                <div 
+                    className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
+                    onClick={() => setIsOpen(false)}
+                />
             )}
         </div>
     );
