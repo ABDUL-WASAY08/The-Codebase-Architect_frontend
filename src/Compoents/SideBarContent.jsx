@@ -69,8 +69,8 @@ const SideBarContent = ({ activeComp, setActiveComp }) => {
                                 key={item.name}
                                 onClick={() => handleItemClick(item.name)}
                                 className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 cursor-pointer ${isActive
-                                    ? 'bg-gary-100 dark:bg-blue-900/30 text-gary-900 dark:text-blue-400 shadow-sm'
-                                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                                    ? 'bg-gary-50 dark:bg-gary-900/30 text-gary-900 dark:text-black shadow-sm'
+                                    : 'text-gray-50 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
                                     }`}
                             >
                                 <Icon size={20} />

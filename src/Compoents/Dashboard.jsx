@@ -51,7 +51,7 @@ const DashboardContent = () => {
         <div className="space-y-4 max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
           {repos.length > 0 ? (
             repos.map((repo) => (
-              <div key={repo.id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:border-blue-400 dark:hover:border-blue-500/50 transition-all bg-gray-50/30 dark:bg-gray-900/20">
+              <div key={repo.id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:border-gary-400 dark:hover:border-gary-500/50 transition-all bg-gray-50/30 dark:bg-gray-900/20">
                 <div className="flex flex-col sm:flex-row justify-between items-start gap-3">
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
@@ -59,7 +59,7 @@ const DashboardContent = () => {
                         href={repo.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-base sm:text-lg font-semibold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-2"
+                        className="text-base sm:text-lg font-semibold text-gary-600 dark:text-gary-400 hover:underline flex items-center gap-2"
                       >
                         {repo.name}
                         <ExternalLink size={14} />
