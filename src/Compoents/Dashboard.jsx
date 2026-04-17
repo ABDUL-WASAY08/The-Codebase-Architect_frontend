@@ -59,7 +59,7 @@ const DashboardContent = () => {
                         href={repo.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-base sm:text-lg font-semibold text-gary-600 dark:text-white hover:underline flex items-center gap-2"
+                        className="text-base sm:text-lg font-semibold text-black dark:text-white hover:underline flex items-center gap-2"
                       >
                         {repo.name}
                         <ExternalLink size={14} />

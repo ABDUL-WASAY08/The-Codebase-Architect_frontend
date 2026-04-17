@@ -55,7 +55,7 @@ const RepositoriesContent = () => {
                       href={repo.url} 
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-base sm:text-lg font-bold text-black-600 dark:text-white hover:text-gary-800 flex items-center gap-2"
+                      className="text-base sm:text-lg font-bold text-black dark:text-white hover:text-gary-800 flex items-center gap-2"
                     >
                       <GitBranchIcon size={18} />
                       <span className="break-all">{repo.name}</span>
@@ -77,7 +77,7 @@ const RepositoriesContent = () => {
                 </div>
                 <button 
                   onClick={() => handleAnalyze(repo)}
-                  className="whitespace-nowrap px-5 py-2.5 bg-white hover:bg-gray-800 text-white text-sm font-semibold rounded-lg transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-600/10 active:scale-95"
+                  className="whitespace-nowrap px-5 py-2.5 border-white border-sm text-black hover:bg-gray-800 text-white text-sm font-semibold rounded-lg transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-600/10 active:scale-95"
                 >
                   <Eye size={16} />
                   <span>Start Analysis</span>
