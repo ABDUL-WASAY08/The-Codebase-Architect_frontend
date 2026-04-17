@@ -39,7 +39,7 @@ const RepositoriesContent = () => {
         </h2>
         <button 
           onClick={() => getRepos()} 
-          className="text-xs font-medium text-blue-600 dark:text-blue-400 hover:underline bg-blue-50 dark:bg-blue-900/20 px-3 py-1.5 rounded-full transition-colors"
+          className="text-xs font-medium text-black dark:text-black hover:underline bg-gary-50 dark:bg-gray-900/20 px-3 py-1.5 rounded-full transition-colors"
         >
           Refresh List
         </button>
@@ -55,7 +55,7 @@ const RepositoriesContent = () => {
                       href={repo.url} 
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-base sm:text-lg font-bold text-blue-600 dark:text-blue-400 hover:text-blue-500 flex items-center gap-2"
+                      className="text-base sm:text-lg font-bold text-black-600 dark:text-white hover:text-gary-800 flex items-center gap-2"
                     >
                       <GitBranchIcon size={18} />
                       <span className="break-all">{repo.name}</span>
@@ -77,7 +77,7 @@ const RepositoriesContent = () => {
                 </div>
                 <button 
                   onClick={() => handleAnalyze(repo)}
-                  className="whitespace-nowrap px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-600/10 active:scale-95"
+                  className="whitespace-nowrap px-5 py-2.5 bg-white hover:bg-gray-800 text-white text-sm font-semibold rounded-lg transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-600/10 active:scale-95"
                 >
                   <Eye size={16} />
                   <span>Start Analysis</span>

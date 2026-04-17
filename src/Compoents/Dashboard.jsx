@@ -59,7 +59,7 @@ const DashboardContent = () => {
                         href={repo.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-base sm:text-lg font-semibold text-gary-600 dark:text-gary-400 hover:underline flex items-center gap-2"
+                        className="text-base sm:text-lg font-semibold text-gary-600 dark:text-white hover:underline flex items-center gap-2"
                       >
                         {repo.name}
                         <ExternalLink size={14} />
@@ -78,7 +78,7 @@ const DashboardContent = () => {
                   <div className="flex gap-2 w-full sm:w-auto justify-end">
                     <button
                       onClick={() => handleAnalyze(repo)}
-                      className="flex items-center gap-2 text-sm bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                      className="flex items-center gap-2 text-sm bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors"
                     >
                       <BarChart3 size={16} />
                       Analyze
