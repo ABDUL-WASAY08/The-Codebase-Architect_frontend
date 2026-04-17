@@ -12,8 +12,8 @@ const RepositoriesContent = () => {
     }
   }, [getRepos, repos.length]);
   const handleAnalyze = async (repo) => {
-    const result = await openRepo(repo); 
-    
+    const result = await openRepo(repo);
+
     if (result?.success) {
       toast.success('File tree fetched!');
       navigate('/Analyzer');
@@ -37,8 +37,8 @@ const RepositoriesContent = () => {
         <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white">
           All Repositories ({repos.length})
         </h2>
-        <button 
-          onClick={() => getRepos()} 
+        <button
+          onClick={() => getRepos()}
           className="text-xs font-medium text-black dark:text-black hover:underline bg-gary-50 dark:bg-gray-900/20 px-3 py-1.5 rounded-full transition-colors"
         >
           Refresh List
@@ -51,8 +51,8 @@ const RepositoriesContent = () => {
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 mb-4">
                 <div className="flex-1">
                   <div className="flex flex-wrap items-center gap-2 mb-1">
-                    <a 
-                      href={repo.url} 
+                    <a
+                      href={repo.url}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-base sm:text-lg font-bold text-black dark:text-white hover:text-gary-800 flex items-center gap-2"
@@ -75,9 +75,9 @@ const RepositoriesContent = () => {
                     {repo.description || "No description provided for this repository."}
                   </p>
                 </div>
-                <button 
+                <button
                   onClick={() => handleAnalyze(repo)}
-                  className="whitespace-nowrap px-5 py-2.5 border-white border-sm text-black hover:bg-gray-800 text-white text-sm font-semibold rounded-lg transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-600/10 active:scale-95"
+                  className="whitespace-nowrap px-5 py-2.5 bg-gray-900 text-white hover:bg-gray-800 text-sm font-semibold rounded-lg transition-all flex items-center justify-center gap-2 shadow-lg shadow-gray-900/10 active:scale-95"
                 >
                   <Eye size={16} />
                   <span>Start Analysis</span>
