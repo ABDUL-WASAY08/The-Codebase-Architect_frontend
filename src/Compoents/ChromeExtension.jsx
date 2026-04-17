@@ -22,7 +22,7 @@ function ChromeExtension() {
             </div>
           </div>
 
-          <div className='bg-blue-700 inline text-white p-2 rounded flex flex-col sm:flex-row gap-4 justify-center mb-12'>
+          <div className='bg-gray-700 inline text-white p-2 rounded flex flex-col sm:flex-row gap-4 justify-center mb-12'>
             <a
               href="./extension/Code_based_Extension.zip"
               download="codebase-architect.zip"

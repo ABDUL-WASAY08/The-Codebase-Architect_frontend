@@ -27,7 +27,7 @@ const AnalyzeContent = () => {
     <div className="bg-white dark:bg-black p-4 sm:p-6 lg:p-8 transition-colors min-h-screen">
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center gap-3 mb-6">
-          <div className="p-2 bg-blue-600 rounded-lg">
+          <div className="p-2 bg-gary-600 rounded-lg">
             <Search size={24} className="text-white" />
           </div>
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
@@ -54,7 +54,7 @@ const AnalyzeContent = () => {
               <button
                 onClick={handleAnalyze}
                 disabled={isLoading || !repoUrl.trim()}
-                className="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed font-bold flex items-center justify-center gap-2 min-w-[160px]"
+                className="bg-gary-600 text-white px-6 py-3 rounded-xl hover:bg-gray-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed font-bold flex items-center justify-center gap-2 min-w-[160px]"
               >
                 {isLoading ? (
                   <>

@@ -34,7 +34,7 @@ const Navbar = ({activeComp,setActiveComp}) => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
                     <div className="flex items-center gap-2">
-                        <Code2 className="w-8 h-8 text-blue-600" />
+                        <Code2 className="w-8 h-8 text-gray-600" />
                         <span className="text-md md:text-xl font-bold text-gray-900 dark:text-white">
                             The Codebase Architect
                         </span>
@@ -45,7 +45,7 @@ const Navbar = ({activeComp,setActiveComp}) => {
                             onClick={() => setToggle(!toggle)}
                             className="flex items-center gap-2 focus:outline-none  cursor-pointer"
                         >
-                            <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full flex items-center justify-center shadow-md">
+                            <div className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center shadow-md">
                                 <User className="w-5 h-5 text-white" />
                             </div>
                             <ChevronDown className="w-4 h-4 text-gray-600 dark:text-gray-400" />

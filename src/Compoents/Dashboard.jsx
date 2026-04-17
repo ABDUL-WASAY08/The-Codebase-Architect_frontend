@@ -78,7 +78,7 @@ const DashboardContent = () => {
                   <div className="flex gap-2 w-full sm:w-auto justify-end">
                     <button
                       onClick={() => handleAnalyze(repo)}
-                      className="flex items-center gap-2 text-sm bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                      className="flex items-center gap-2 text-sm bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
                     >
                       <BarChart3 size={16} />
                       Analyze

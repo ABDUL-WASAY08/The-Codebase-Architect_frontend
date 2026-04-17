@@ -9,15 +9,11 @@ import {
   BookOpen,
   CheckCircle,
   ArrowRight,
-  Clock,
-  Users,
   CreditCard,
   Server,
   Zap,
-  BarChart3,
   FolderTree,
   Search,
-  Download
 } from 'lucide-react';
 import React, { useState } from 'react';
 import { auth, provider } from '../api/firebaseSetup.js';
@@ -182,7 +178,6 @@ function AuthComp() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Navigation Bar */}
       <nav className="border-b border-gray-200 bg-white sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
@@ -201,17 +196,13 @@ function AuthComp() {
       </nav>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Hero Section */}
         <div className="grid lg:grid-cols-2 gap-16 items-start">
-          {/* Left Column - Documentation Style Content */}
           <div className="space-y-8">
-            {/* Badge */}
             <div className="inline-flex items-center gap-2 bg-gray-100 rounded-md px-3 py-1">
               <BookOpen size={14} className="text-gray-600" />
               <span className="text-sm text-gray-600">Documentation / Getting Started</span>
             </div>
 
-            {/* Title Section */}
             <div className="space-y-4">
               <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 tracking-tight">
                 Code Analysis Platform
@@ -224,7 +215,6 @@ function AuthComp() {
               </p>
             </div>
 
-            {/* Quick Start Guide */}
             <div className="bg-gray-50 rounded-lg border border-gray-200 p-6">
               <div className="flex items-center gap-2 mb-4">
                 <div className="w-1 h-6 bg-gray-900 rounded-full"></div>
@@ -255,7 +245,6 @@ function AuthComp() {
               </div>
             </div>
 
-            {/* Security Note */}
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 flex gap-3">
               <Shield size={20} className="text-blue-600 flex-shrink-0 mt-0.5" />
               <div>
@@ -265,10 +254,8 @@ function AuthComp() {
             </div>
           </div>
 
-          {/* Right Column - Login Card */}
           <div className="lg:pl-8">
             <div className="sticky top-24">
-              {/* Authentication Card */}
               <div className="border border-gray-200 rounded-lg bg-white shadow-sm">
                 <div className="border-b border-gray-200 px-6 py-4">
                   <h2 className="text-xl font-semibold text-gray-900">Authentication Required</h2>
@@ -276,7 +263,6 @@ function AuthComp() {
                 </div>
                 
                 <div className="px-6 py-6 space-y-6">
-                  {/* Feature List */}
                   <div className="space-y-3">
                     <p className="text-sm font-medium text-gray-700">Access includes:</p>
                     <div className="space-y-2">
@@ -299,7 +285,6 @@ function AuthComp() {
                     </div>
                   </div>
 
-                  {/* GitHub Login Button */}
                   <button
                     id="startbtn"
                     onClick={handleGithubLogin}
@@ -337,7 +322,6 @@ function AuthComp() {
           </div>
         </div>
 
-        {/* Documentation Section */}
         <div id="documentation" className="mt-20 scroll-mt-20">
           <div className="border-t border-gray-200 pt-12">
             <div className="text-center mb-12">
@@ -377,7 +361,6 @@ function AuthComp() {
               ))}
             </div>
 
-            {/* Documentation Search Bar */}
             <div className="mt-8 bg-gray-50 border border-gray-200 rounded-lg p-6">
               <div className="flex items-center gap-3">
                 <Search size={20} className="text-gray-400" />
@@ -394,7 +377,6 @@ function AuthComp() {
           </div>
         </div>
 
-        {/* Features Section */}
         <div id="features" className="mt-20 scroll-mt-20">
           <div className="border-t border-gray-200 pt-12">
             <div className="text-center mb-12">
@@ -430,7 +412,6 @@ function AuthComp() {
           </div>
         </div>
 
-        {/* Pricing Section */}
         <div id="pricing" className="mt-20 scroll-mt-20">
           <div className="border-t border-gray-200 pt-12">
             <div className="text-center mb-12">
@@ -480,7 +461,6 @@ function AuthComp() {
               ))}
             </div>
 
-            {/* Enterprise Contact */}
             <div className="mt-8 text-center">
               <p className="text-sm text-gray-500">
                 All plans include core features. Need custom pricing?{" "}
@@ -490,7 +470,6 @@ function AuthComp() {
           </div>
         </div>
 
-        {/* Footer */}
         <footer className="mt-20 border-t border-gray-200 pt-8 pb-12">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
@@ -526,7 +505,7 @@ function AuthComp() {
             </div>
           </div>
           <div className="mt-8 pt-8 border-t border-gray-200 text-center text-sm text-gray-500">
-            © 2024 CodeBase Architecture. All rights reserved.
+            © 2026 CodeBase Architecture. All rights reserved.
           </div>
         </footer>
       </div>
